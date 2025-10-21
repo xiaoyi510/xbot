@@ -18,7 +18,7 @@ XBot 是一个基于 Go 语言开发的高性能 OneBot 机器人框架，提供
 ## 📦 安装
 
 ```bash
-go get -u github.com/xiaoyi510/xarr-onebot-xbot
+go get -u github.com/xiaoyi510/xbot
 ```
 
 ## 🚀 快速开始

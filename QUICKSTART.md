@@ -18,7 +18,7 @@ cd mybot
 go mod init mybot
 
 # 安装 XBot
-go get -u github.com/xiaoyi510/xarr-onebot-xbot
+go get -u github.com/xiaoyi510/xbot
 ```
 
 ## ⚙️ 第二步：配置文件
@@ -66,7 +66,7 @@ mkdir -p plugins/hello
 ```go
 package hello
 
-import "github.com/xiaoyi510/xarr-onebot-xbot"
+import "github.com/xiaoyi510/xbot"
 
 func init() {
     // 创建引擎
