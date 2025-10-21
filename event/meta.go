@@ -1,7 +1,7 @@
 package event
 
 import (
-	"xbot/types"
+	"github.com/xiaoyi510/xbot/types"
 )
 
 // LifecycleMetaEvent 生命周期元事件

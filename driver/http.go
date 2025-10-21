@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"xbot/logger"
-	"xbot/types"
+	"github.com/xiaoyi510/xbot/logger"
+	"github.com/xiaoyi510/xbot/types"
 )
 
 // HTTPDriver HTTP 驱动器

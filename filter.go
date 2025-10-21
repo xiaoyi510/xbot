@@ -7,9 +7,9 @@ import (
 	"strings"
 	"sync"
 
-	"xbot/event"
-	"xbot/logger"
-	"xbot/message"
+	"github.com/xiaoyi510/xbot/event"
+	"github.com/xiaoyi510/xbot/logger"
+	"github.com/xiaoyi510/xbot/message"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/cast"

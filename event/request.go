@@ -1,7 +1,7 @@
 package event
 
 import (
-	"xbot/types"
+	"github.com/xiaoyi510/xbot/types"
 )
 
 // FriendRequestEvent 加好友请求事件

@@ -58,7 +58,7 @@ package main
 
 import (
     "xbot"
-    "xbot/logger"
+    "github.com/xiaoyi510/xbot/logger"
 )
 
 func main() {

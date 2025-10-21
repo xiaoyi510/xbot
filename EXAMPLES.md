@@ -101,7 +101,7 @@ engine.OnCommand("msg").Handle(func(ctx *xbot.Context) {
 ### 使用消息构建器
 
 ```go
-import "xbot/message"
+import "github.com/xiaoyi510/xbot/message"
 
 engine.OnCommand("welcome").Handle(func(ctx *xbot.Context) {
     msg := message.NewBuilder().

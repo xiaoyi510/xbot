@@ -11,10 +11,10 @@ import (
 	"sync"
 	"time"
 
-	"xbot/event"
-	"xbot/logger"
-	"xbot/types"
-	"xbot/utils"
+	"github.com/xiaoyi510/xbot/event"
+	"github.com/xiaoyi510/xbot/logger"
+	"github.com/xiaoyi510/xbot/types"
+	"github.com/xiaoyi510/xbot/utils"
 )
 
 // HTTPPostDriver 反向 HTTP POST 驱动器

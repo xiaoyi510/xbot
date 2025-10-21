@@ -1,7 +1,7 @@
 package event
 
 import (
-	"xbot/types"
+	"github.com/xiaoyi510/xbot/types"
 )
 
 // GroupUploadNoticeEvent 群文件上传事件

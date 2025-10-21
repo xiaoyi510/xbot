@@ -5,9 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"xbot/event"
-	"xbot/logger"
-	"xbot/middleware"
+	"github.com/xiaoyi510/xbot/event"
+	"github.com/xiaoyi510/xbot/logger"
+	"github.com/xiaoyi510/xbot/middleware"
 )
 
 // Engine 引擎

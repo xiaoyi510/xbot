@@ -11,13 +11,13 @@ import (
 	"syscall"
 	"time"
 
-	"xbot/api"
-	"xbot/config"
-	"xbot/driver"
-	"xbot/event"
-	"xbot/logger"
-	"xbot/session"
-	"xbot/storage"
+	"github.com/xiaoyi510/xbot/api"
+	"github.com/xiaoyi510/xbot/config"
+	"github.com/xiaoyi510/xbot/driver"
+	"github.com/xiaoyi510/xbot/event"
+	"github.com/xiaoyi510/xbot/logger"
+	"github.com/xiaoyi510/xbot/session"
+	"github.com/xiaoyi510/xbot/storage"
 
 	"github.com/redis/go-redis/v9"
 )

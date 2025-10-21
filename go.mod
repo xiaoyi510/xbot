@@ -1,4 +1,4 @@
-module xbot
+module github.com/xiaoyi510/xbot
 
 go 1.24.0
 

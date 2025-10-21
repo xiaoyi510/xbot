@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"fmt"
+	"github.com/xiaoyi510/xbot/logger"
 	"reflect"
 	"runtime/debug"
 	"time"
-	"xbot/logger"
 )
 
 // Recovery 恢复中间件 - 捕获 panic

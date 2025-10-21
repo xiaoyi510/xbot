@@ -1,8 +1,8 @@
 package event
 
 import (
-	"xbot/message"
-	"xbot/types"
+	"github.com/xiaoyi510/xbot/message"
+	"github.com/xiaoyi510/xbot/types"
 )
 
 // PrivateMessageEvent 私聊消息事件

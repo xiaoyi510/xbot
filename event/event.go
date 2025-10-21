@@ -2,8 +2,8 @@ package event
 
 import (
 	"encoding/json"
-	"xbot/message"
-	"xbot/types"
+	"github.com/xiaoyi510/xbot/message"
+	"github.com/xiaoyi510/xbot/types"
 )
 
 // Event 基础事件接口

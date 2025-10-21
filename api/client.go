@@ -3,8 +3,8 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"xbot/driver"
-	"xbot/types"
+	"github.com/xiaoyi510/xbot/driver"
+	"github.com/xiaoyi510/xbot/types"
 )
 
 // Client API 客户端

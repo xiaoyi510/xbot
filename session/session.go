@@ -2,9 +2,9 @@ package session
 
 import (
 	"errors"
+	"github.com/xiaoyi510/xbot/utils"
 	"sync"
 	"time"
-	"xbot/utils"
 )
 
 // Session 会话

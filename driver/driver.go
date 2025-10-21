@@ -1,8 +1,8 @@
 package driver
 
 import (
-	"xbot/event"
-	"xbot/types"
+	"github.com/xiaoyi510/xbot/event"
+	"github.com/xiaoyi510/xbot/types"
 )
 
 // Driver 驱动器接口

@@ -1,7 +1,7 @@
 package config
 
 import (
-	"xbot/logger"
+	"github.com/xiaoyi510/xbot/logger"
 
 	"github.com/fsnotify/fsnotify"
 )

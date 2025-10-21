@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"xbot/event"
-	"xbot/logger"
-	"xbot/message"
-	"xbot/session"
-	"xbot/storage"
+	"github.com/xiaoyi510/xbot/event"
+	"github.com/xiaoyi510/xbot/logger"
+	"github.com/xiaoyi510/xbot/message"
+	"github.com/xiaoyi510/xbot/session"
+	"github.com/xiaoyi510/xbot/storage"
 )
 
 // RegexMatch 正则匹配结果
