@@ -199,7 +199,7 @@ go mod download
 ```go
 package admin
 
-import "xbot"
+import "github.com/xiaoyi510/xbot"
 
 func init() {
     engine := xbot.NewEngine()

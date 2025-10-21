@@ -57,7 +57,7 @@ storage:
 package main
 
 import (
-    "xbot"
+    "github.com/xiaoyi510/xbot"
     "github.com/xiaoyi510/xbot/logger"
 )
 
@@ -83,7 +83,7 @@ func main() {
 ```go
 package hello
 
-import "xbot"
+import "github.com/xiaoyi510/xbot"
 
 func init() {
     engine := xbot.NewEngine()
@@ -111,9 +111,9 @@ func init() {
 package main
 
 import (
-    _ "yourproject/plugins/hello"  // 导入插件
+    _ "plugins/hello"  // 导入插件
     
-    "xbot"
+    "github.com/xiaoyi510/xbot"
 )
 
 func main() {

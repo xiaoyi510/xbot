@@ -2,6 +2,7 @@ package xbot
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/xiaoyi510/xbot/event"
@@ -112,6 +113,75 @@ func (ctx *Context) GetPlainText() string {
 		return ""
 	}
 	return msg.GetPlainText()
+}
+
+// GetRawMessage 获取原始消息（含 CQ 码）
+func (ctx *Context) GetRawMessage() string {
+	msg := ctx.GetMessage()
+	if msg == nil {
+		return ""
+	}
+	return msg.GetRawMessage()
+}
+
+// GetArgs 获取命令参数
+// 返回去除命令前缀和命令本身后的参数部分
+// 例如："/echo hello world" 返回 "hello world"
+func (ctx *Context) GetArgs() string {
+	text := ctx.GetPlainText()
+	if text == "" {
+		return ""
+	}
+
+	// 如果有命令前缀，尝试去除
+	prefix := ctx.Bot.Config.CommandPrefix
+	if prefix != "" && len(text) > len(prefix) && text[:len(prefix)] == prefix {
+		text = text[len(prefix):]
+	}
+
+	// 查找第一个空格，去除命令本身
+	for i, ch := range text {
+		if ch == ' ' || ch == '\t' || ch == '\n' {
+			// 跳过连续的空白字符
+			for i < len(text) && (text[i] == ' ' || text[i] == '\t' || text[i] == '\n') {
+				i++
+			}
+			if i < len(text) {
+				return text[i:]
+			}
+			return ""
+		}
+	}
+
+	// 没有找到空格，说明没有参数
+	return ""
+}
+
+// GetAtUsers 获取被 @ 的用户列表
+func (ctx *Context) GetAtUsers() []int64 {
+	msg := ctx.GetMessage()
+	if msg == nil {
+		return nil
+	}
+
+	var users []int64
+	for _, seg := range *msg {
+		if seg.Type == "at" {
+			if qq, ok := seg.Data["qq"].(string); ok {
+				// 将字符串转为 int64
+				var userID int64
+				fmt.Sscanf(qq, "%d", &userID)
+				if userID > 0 {
+					users = append(users, userID)
+				}
+			} else if qq, ok := seg.Data["qq"].(float64); ok {
+				users = append(users, int64(qq))
+			} else if qq, ok := seg.Data["qq"].(int64); ok {
+				users = append(users, qq)
+			}
+		}
+	}
+	return users
 }
 
 // Reply 回复消息
@@ -337,4 +407,111 @@ func (ctx *Context) Abort() {
 // IsAborted 检查是否已中止
 func (ctx *Context) IsAborted() bool {
 	return ctx.aborted
+}
+
+// ========== 消息操作方法 ==========
+
+// Delete 撤回当前消息
+func (ctx *Context) Delete() error {
+	messageID := ctx.GetMessageID()
+	if messageID == 0 {
+		return fmt.Errorf("无法获取消息ID")
+	}
+	return ctx.Bot.API.DeleteMsg(messageID)
+}
+
+// SendPrivateMessage 发送私聊消息
+func (ctx *Context) SendPrivateMessage(userID int64, msg interface{}) (int64, error) {
+	var messageData interface{}
+
+	// 转换消息类型
+	switch m := msg.(type) {
+	case string:
+		messageData = []message.MessageSegment{message.Text(m)}
+	case message.Message:
+		messageData = m
+	case []message.MessageSegment:
+		messageData = m
+	case message.MessageSegment:
+		messageData = []message.MessageSegment{m}
+	default:
+		messageData = msg
+	}
+
+	resp, err := ctx.Bot.API.SendPrivateMsg(userID, messageData)
+	if err != nil {
+		return 0, err
+	}
+	return resp.Data.MessageID, nil
+}
+
+// SendGroupMessage 发送群消息
+func (ctx *Context) SendGroupMessage(groupID int64, msg interface{}) (int64, error) {
+	var messageData interface{}
+
+	// 转换消息类型
+	switch m := msg.(type) {
+	case string:
+		messageData = []message.MessageSegment{message.Text(m)}
+	case message.Message:
+		messageData = m
+	case []message.MessageSegment:
+		messageData = m
+	case message.MessageSegment:
+		messageData = []message.MessageSegment{m}
+	default:
+		messageData = msg
+	}
+
+	resp, err := ctx.Bot.API.SendGroupMsg(groupID, messageData)
+	if err != nil {
+		return 0, err
+	}
+	return resp.Data.MessageID, nil
+}
+
+// ========== 群组操作方法 ==========
+
+// SetGroupKick 踢出群成员
+func (ctx *Context) SetGroupKick(groupID, userID int64, rejectAddRequest bool) error {
+	return ctx.Bot.API.SetGroupKick(groupID, userID, rejectAddRequest)
+}
+
+// SetGroupBan 禁言群成员
+// duration: 禁言时长（秒），0 表示解除禁言
+func (ctx *Context) SetGroupBan(groupID, userID int64, duration int64) error {
+	return ctx.Bot.API.SetGroupBan(groupID, userID, int32(duration))
+}
+
+// SetGroupWholeBan 全体禁言
+func (ctx *Context) SetGroupWholeBan(groupID int64, enable bool) error {
+	return ctx.Bot.API.SetGroupWholeBan(groupID, enable)
+}
+
+// SetGroupCard 设置群名片
+func (ctx *Context) SetGroupCard(groupID, userID int64, card string) error {
+	return ctx.Bot.API.SetGroupCard(groupID, userID, card)
+}
+
+// SetGroupAdmin 设置群管理员
+func (ctx *Context) SetGroupAdmin(groupID, userID int64, enable bool) error {
+	return ctx.Bot.API.SetGroupAdmin(groupID, userID, enable)
+}
+
+// ========== 权限判断方法 ==========
+
+// IsAdmin 判断当前用户是否为群管理员或群主
+func (ctx *Context) IsAdmin() bool {
+	if evt, ok := ctx.Event.(*event.GroupMessageEvent); ok {
+		return evt.Sender.Role == "admin" || evt.Sender.Role == "owner"
+	}
+	return false
+}
+
+// IsOwner 判断当前用户是否为群主
+func (ctx *Context) IsOwner() bool {
+	if evt, ok := ctx.Event.(*event.GroupMessageEvent); ok {
+		return evt.Sender.Role == "owner"
+	}
+	return false
 }
