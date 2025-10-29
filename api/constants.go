@@ -17,8 +17,9 @@ const (
 	ActionSetGroupAddRequest = "set_group_add_request"
 
 	// 信息获取API
-	ActionGetLoginInfo = "get_login_info"
-	ActionGetGroupList = "get_group_list"
+	ActionGetLoginInfo       = "get_login_info"
+	ActionGetGroupList       = "get_group_list"
+	ActionGetGroupMemberList = "get_group_member_list"
 
 	// 群公告和精华消息API
 	ActionSendGroupNotice   = "_send_group_notice"

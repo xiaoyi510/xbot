@@ -206,6 +206,60 @@ func (c *Client) GetGroupList() (*types.Response[[]types.GroupInfo], error) {
 	return &result, nil
 }
 
+// GetGroupMemberList 获取群成员列表
+func (c *Client) GetGroupMemberList(groupID int64) (*types.Response[[]types.GroupMemberInfo], error) {
+	params := map[string]interface{}{
+		"group_id": groupID,
+	}
+
+	resp, err := c.CallAPI(ActionGetGroupMemberList, params)
+	if err != nil {
+		return nil, err
+	}
+
+	var result types.Response[[]types.GroupMemberInfo]
+	result.Status = resp.Status
+	result.RetCode = resp.RetCode
+	result.Message = resp.Message
+	result.Wording = resp.Wording
+
+	// 解析群成员列表数据
+	if resp.Data != nil {
+		dataArray, ok := resp.Data.([]interface{})
+		if ok {
+			members := make([]types.GroupMemberInfo, 0, len(dataArray))
+			for _, item := range dataArray {
+				itemMap, ok := item.(map[string]interface{})
+				if !ok {
+					continue
+				}
+
+				member := types.GroupMemberInfo{
+					GroupID:         getInt64(itemMap, "group_id"),
+					UserID:          getInt64(itemMap, "user_id"),
+					Nickname:        getString(itemMap, "nickname"),
+					Card:            getString(itemMap, "card"),
+					Sex:             types.Sex(getString(itemMap, "sex")),
+					Age:             int32(getInt64(itemMap, "age")),
+					Area:            getString(itemMap, "area"),
+					JoinTime:        getInt64(itemMap, "join_time"),
+					LastSentTime:    getInt64(itemMap, "last_sent_time"),
+					Level:           getString(itemMap, "level"),
+					Role:            types.Role(getString(itemMap, "role")),
+					Unfriendly:      getBool(itemMap, "unfriendly"),
+					Title:           getString(itemMap, "title"),
+					TitleExpireTime: getInt64(itemMap, "title_expire_time"),
+					CardChangeable:  getBool(itemMap, "card_changeable"),
+				}
+				members = append(members, member)
+			}
+			result.Data = members
+		}
+	}
+
+	return &result, nil
+}
+
 // SetGroupAddRequest 处理加群请求
 func (c *Client) SetGroupAddRequest(flag, subType string, approve bool, reason string) error {
 	params := map[string]interface{}{
@@ -369,6 +423,16 @@ func getString(m map[string]interface{}, key string) string {
 		}
 	}
 	return ""
+}
+
+// 辅助函数：从 map 中获取 bool
+func getBool(m map[string]interface{}, key string) bool {
+	if val, ok := m[key]; ok {
+		if b, ok := val.(bool); ok {
+			return b
+		}
+	}
+	return false
 }
 
 // SendGroupForwardMsg 发送群合并转发消息
